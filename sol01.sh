@@ -25,7 +25,29 @@ solution() {
         fi
     done
 
-    echo -e "Sol 1: $red $counter $stop"
+    echo -e "Part 1: $red $counter $stop"
+
+    # Part 2
+    declare -i sum3=0
+    declare -i counter3=0
+    declare -i prevSum=32000
+    for ((i=0; i<${#numbers[@]}; i++))
+    do
+        if (( i >= 3 ))
+        then
+            prevSum=$sum3
+            (( sum3-=${numbers[$i-3]} ))
+        fi
+
+        (( sum3+=${numbers[$i]} ))
+
+        if (( sum3 > prevSum ))
+        then
+            counter3+=1
+        fi
+    done
+
+    echo -e "Part 2: $red $counter3 $stop"
 }
 
 main() {
