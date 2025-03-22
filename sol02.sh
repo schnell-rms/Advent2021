@@ -10,26 +10,35 @@ sol02() {
     declare -i x=0
     declare -i y=0
 
+    declare -i aim=0
+    declare -i y2=0
+
     while read line || [[ -n $line ]]
     do
         # echo $line
         if [[ $line =~ forward\ ([0-9]+) ]]
         then
             (( x += ${BASH_REMATCH[1]} ))
+            (( y2 += $aim * ${BASH_REMATCH[1]} ))
         elif [[ $line =~ down\ ([0-9]+) ]]
         then
             (( y += ${BASH_REMATCH[1]} ))
+            (( aim += ${BASH_REMATCH[1]} ))
         elif [[ $line =~ up\ ([0-9]+) ]]
         then
             (( y -= ${BASH_REMATCH[1]} ))
+            (( aim -= ${BASH_REMATCH[1]} ))
         else
             printf "Unexpected line '$red$line$stop'\n"
         fi
     done < $1
 
-    printf "Forward: $x\n"
-    printf "Depth: %d\n" $y
-    printf "Key %d\n" $(($x * $y))
+    printf "Forward 1&2: $x\n"
+    printf "Depth 1: %d\n" $y
+    printf "Part1 %d\n" $(($x * $y))
+    printf "Depth 2: %d\n" $y2
+    printf "Aim 2: %d\n" $aim
+    printf "Part2 %d\n" $(($x * $y2))
     return 0
 }
 
