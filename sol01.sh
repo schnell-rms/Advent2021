@@ -65,14 +65,20 @@ main() {
         esac
     done
 
+    if [[ $0 =~ ([0-9]+).sh ]]
+    then
+        sol_number=${BASH_REMATCH[1]}
+    else
+        echo "Could not determine the input's number based on the script's name"
+    fi
 
-    sol_number=$(echo $0 | sed "s/[^0-9]//g")
-
-    filename="inputs/$sol_number.txt"
+    filename=$(pwd)
+    filename+="/inputs/$sol_number"
     if $useSampleInput
     then
-        filename="inputs/${sol_number}Sample.txt"
+        filename+="Sample"
     fi
+    filename+=".txt"
     
     solution $filename
 }
