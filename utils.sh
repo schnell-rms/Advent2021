@@ -37,3 +37,26 @@ function getInput() {
         input_file="$(pwd)/inputs/$num.txt"
     fi
 }
+
+function binaryToDecimal() {
+    local -g decimal=0
+    local binary=$1
+
+    local -i pw2=1
+
+    for (( i=${#binary} - 1; i >= 0; i-- ))
+    do
+        if [[ ${binary:i:1} -eq 1 ]]
+        then
+            ((decimal += pw2))
+        fi
+
+        ((pw2 *= 2))
+    done
+
+    # in case there is a second parameter:
+    if [[ $# -ge 2 ]]
+    then
+        eval "$2=$decimal"
+    fi
+}
