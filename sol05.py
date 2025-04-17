@@ -3,8 +3,10 @@ import numpy as np
 
 from collections import defaultdict
 
+import argparse
 
-def sol1(inputPath):
+
+def sol1(inputPath, is_verbose):
     map=defaultdict(int)
 
     def checkLine(line):
@@ -12,7 +14,8 @@ def sol1(inputPath):
         if numbers[0]==numbers[2] or numbers[1] == numbers[3]:
             for i in range(min(numbers[0], numbers[2]), max(numbers[0], numbers[2]) + 1):
                 for j in range(min(numbers[1], numbers[3]), max(numbers[1], numbers[3]) + 1):
-                    # print(i, " <> ",j)
+                    if is_verbose:
+                        print(i, " <> ",j)
                     map[(i,j)] += 1
 
     with open(inputPath) as file:
@@ -22,7 +25,7 @@ def sol1(inputPath):
     firstStar = sum([map[x] > 1 for x in map.keys()])
     print("First star: ", firstStar)
 
-def sol2(inputPath):
+def sol2(inputPath, is_verbose):
     map=defaultdict(int)
 
     def checkLine(line):
@@ -36,12 +39,14 @@ def sol2(inputPath):
 
         while (i != numbers[2] or j != numbers[3]):
             map[(i,j)] += 1
-            # print(i, " <> ",j)
+            if is_verbose:
+                print(i, " <> ",j)
             i += step_row
             j += step_col
 
         map[(i,j)] += 1
-        # print(i, " <> ",j)
+        if is_verbose:
+            print(i, " <> ",j)
         assert(j==numbers[3])
 
     with open(inputPath) as file:
@@ -52,6 +57,12 @@ def sol2(inputPath):
     print("Second star: ", secondStar)
 
 if __name__=="__main__":
-    finput = "inputs/05.txt"
-    sol1(finput)
-    sol2(finput)
+    parser = argparse.ArgumentParser("AoC 2021 Day05")
+    parser.add_argument("-s", "--sample", help="Use the sample input.", action="store_true")
+    parser.add_argument("-v", "--verbose", help="Print the added coordinates.", action="store_true")
+    args = parser.parse_args()
+
+    finput = "inputs/05Sample.txt" if args.sample else "inputs/05.txt"
+
+    sol1(finput, args.verbose)
+    sol2(finput, args.verbose)
